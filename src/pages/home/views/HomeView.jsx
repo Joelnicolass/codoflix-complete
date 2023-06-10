@@ -1,0 +1,81 @@
+import { Button, Card, Col, Spacer, Text } from "@nextui-org/react";
+import CarouselAndTitle from "../../../components/CarouselAndTitle/CarouselAndTitle";
+
+import useSWR from "swr";
+import {
+  getPopularMovies,
+  getPopularTV,
+} from "../../../services/tmdb.services";
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import Banner from "../../../components/Banner/Banner";
+
+const HomeView = () => {
+  const { data: popularMovies, isLoading: popularMoviesIsLoading } = useSWR(
+    "getPopularMovies",
+    () => getPopularMovies()
+  );
+
+  const { data: popularSeries, isLoading: popularSeriesIsLoading } = useSWR(
+    "getPopularSeries",
+    () => getPopularTV()
+  );
+
+  const [banner, setBanner] = useState(null);
+
+  useEffect(() => {
+    const getRandomMovieOrSerie = () => {
+      const random = Math.random() * 10;
+
+      if (popularMoviesIsLoading || popularSeriesIsLoading) return;
+
+      if (random > 5)
+        return popularMovies[Math.floor(Math.random() * popularMovies.length)];
+
+      return popularSeries[Math.floor(Math.random() * popularSeries.length)];
+    };
+
+    const randomMovieOrSerie = getRandomMovieOrSerie();
+    setBanner(randomMovieOrSerie);
+  }, [popularMovies, popularSeries]);
+
+  return (
+    <>
+      <Helmet>
+        <title>Home | CodoFlix</title>
+        <meta name="description" content="Home | CodoFlix" />
+      </Helmet>
+      <div
+        style={{
+          width: "100vw",
+        }}
+      >
+        <div
+          style={{
+            marginTop: "100px",
+            padding: "0 20px",
+          }}
+        >
+          <Banner data={banner} />
+
+          <CarouselAndTitle
+            title="Las Pelis Mas Populares!"
+            isLoading={popularMoviesIsLoading}
+            data={popularMovies}
+          />
+          <Spacer y={2} />
+
+          <CarouselAndTitle
+            title="Las Series Mas Populares!"
+            isLoading={popularSeriesIsLoading}
+            data={popularSeries}
+          />
+
+          <Spacer y={2} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default HomeView;
