@@ -1,4 +1,13 @@
-import { Avatar, Image, Navbar, Text, red, useTheme } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Image,
+  Navbar,
+  Popover,
+  Text,
+  red,
+  useTheme,
+} from "@nextui-org/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Logo } from "../Logo/Logo";
@@ -7,6 +16,8 @@ import avatarAnim from "../../assets/avatar_anim.json";
 import { useAuth } from "../../core/auth/hooks/useAuth";
 import codoflixLogo from "../../assets/codoflix_logo.png";
 import { motion } from "framer-motion";
+import { AUTH_LOGOUT } from "../../core/auth/reducers/authReducer";
+import { signOut } from "../../services/firebase.services";
 
 const s = {
   link: {
@@ -16,7 +27,15 @@ const s = {
 
 const Nav = () => {
   const { theme } = useTheme();
-  const { state } = useAuth();
+  const { state, dispatch } = useAuth();
+
+  const handleLogout = async () => {
+    const res = await signOut();
+
+    dispatch({
+      type: AUTH_LOGOUT,
+    });
+  };
 
   const routes = [
     {
@@ -81,21 +100,35 @@ const Nav = () => {
       </Navbar.Content>
       <Navbar.Content>
         <Navbar.Item>
-          <Text>{state.user ? state.user.email : "Invitado"}</Text>
+          <Text>
+            {state.user
+              ? state.user.displayName || state.user.email
+              : "Invitado"}
+          </Text>
         </Navbar.Item>
         <Navbar.Item>
           {state.user ? (
-            <Avatar
-              bordered
-              css={{
-                cursor: "pointer",
-                height: "50px",
-                width: "50px",
-              }}
-              zoomed
-              color={"gradient"}
-              src={state.user.photoURL}
-            ></Avatar>
+            <Popover>
+              <Popover.Trigger>
+                <Avatar
+                  onClick={() => console.log("Avatar clicked")}
+                  bordered
+                  css={{
+                    cursor: "pointer",
+                    height: "50px",
+                    width: "50px",
+                  }}
+                  zoomed
+                  color={"gradient"}
+                  src={state.user.photoURL}
+                ></Avatar>
+              </Popover.Trigger>
+              <Popover.Content>
+                <Button onPress={handleLogout} color="secondary" auto>
+                  Cerrar sesión
+                </Button>
+              </Popover.Content>
+            </Popover>
           ) : (
             <Player
               autoplay

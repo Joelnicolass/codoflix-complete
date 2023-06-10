@@ -1,6 +1,6 @@
 export const authInitialState = {
   user: null,
-  isLogged: false,
+  isAuth: false,
 };
 
 export const authKey = "auth";
@@ -18,13 +18,13 @@ export const authReducer = (state = authInitialState, action) => {
       return {
         ...state,
         user: action.payload,
-        isLogged: true,
+        isAuth: true,
       };
     case AUTH_LOGOUT:
       return {
         ...state,
         user: null,
-        isLogged: false,
+        isAuth: false,
       };
 
     default:

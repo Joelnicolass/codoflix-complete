@@ -51,7 +51,7 @@ const Banner = ({ data }) => {
           backgroundColor: ishover ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0)",
           backdropFilter: ishover ? "blur(10px)" : "blur(0px)",
           transition: "all 0.3s ease-in-out",
-          height: "20%",
+          height: "30%",
         }}
       >
         <Col>
