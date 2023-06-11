@@ -5,7 +5,7 @@ import {
   signInWithGoogle,
   signUpWithEmail,
 } from "../../../services/firebase.services";
-import { AUTH_LOGIN } from "../../../core/auth/reducers/authReducer";
+import { AUTH_LOGIN, authKey } from "../../../core/auth/reducers/authReducer";
 
 const useLogin = () => {
   const { dispatch } = useAuth();
@@ -20,6 +20,14 @@ const useLogin = () => {
       const res = await signInWithGoogle();
 
       if (!res) return;
+
+      localStorage.setItem(
+        authKey,
+        JSON.stringify({
+          isAuth: true,
+          user: res.user,
+        })
+      );
 
       dispatch({
         type: AUTH_LOGIN,
@@ -39,6 +47,14 @@ const useLogin = () => {
       if (!email || !password) return;
 
       const res = await signUpWithEmail(email, password);
+
+      localStorage.setItem(
+        authKey,
+        JSON.stringify({
+          isAuth: true,
+          user: res.user,
+        })
+      );
 
       dispatch({
         type: AUTH_LOGIN,
@@ -67,6 +83,14 @@ const useLogin = () => {
       if (!email || !password) return;
 
       const res = await signInWithEmail(email, password);
+
+      localStorage.setItem(
+        authKey,
+        JSON.stringify({
+          isAuth: true,
+          user: res.user,
+        })
+      );
 
       dispatch({
         type: AUTH_LOGIN,

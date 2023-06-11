@@ -17,7 +17,7 @@ import avatarAnim from "../../assets/avatar_anim.json";
 import { useAuth } from "../../core/auth/hooks/useAuth";
 import codoflixLogo from "../../assets/codoflix_logo.png";
 import { motion } from "framer-motion";
-import { AUTH_LOGOUT } from "../../core/auth/reducers/authReducer";
+import { AUTH_LOGOUT, authKey } from "../../core/auth/reducers/authReducer";
 import { signOut } from "../../services/firebase.services";
 
 const s = {
@@ -31,7 +31,9 @@ const Nav = () => {
   const { state, dispatch } = useAuth();
 
   const handleLogout = async () => {
-    const res = await signOut();
+    await signOut();
+
+    localStorage.removeItem(authKey);
 
     dispatch({
       type: AUTH_LOGOUT,
