@@ -1,24 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import CustomInput from "../../../../components/CustomInput/CustomInput";
 import { Button, Image, Spacer } from "@nextui-org/react";
 import { motion } from "framer-motion";
-import { signInWithGoogle } from "../../../../services/firebase.services";
-import { useAuth } from "../../../../core/auth/hooks/useAuth";
-import { AUTH_LOGIN } from "../../../../core/auth/reducers/authReducer";
+import useLogin from "../../hooks/useLogin";
 
 const SignInForm = () => {
-  const { dispatch } = useAuth();
-
-  const signIn = async () => {
-    const res = await signInWithGoogle();
-
-    if (!res) return;
-
-    dispatch({
-      type: AUTH_LOGIN,
-      payload: res.user,
-    });
-  };
+  const { form, signInEmail, setForm, signInGoogle } = useLogin();
 
   return (
     <motion.div
@@ -27,6 +14,7 @@ const SignInForm = () => {
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       <form
+        onSubmit={signInEmail}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -37,6 +25,7 @@ const SignInForm = () => {
           type={"email"}
           name={"email"}
           placeholder={"c o d o f l i x @ f i l m s . c o m"}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
         <Spacer y={2} />
         <CustomInput
@@ -44,11 +33,14 @@ const SignInForm = () => {
           type={"password"}
           name={"password"}
           placeholder={"* * * * * * * *"}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
         <Spacer y={2} />
-        <Button color={"secondary"}>Iniciar sesión</Button>
+        <Button type="submit" color={"secondary"}>
+          Iniciar sesión
+        </Button>
         <Spacer y={1} />
-        <Button onPress={signIn}>
+        <Button onPress={signInGoogle}>
           <Image
             width={20}
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"

@@ -4,6 +4,7 @@ import {
   Image,
   Navbar,
   Popover,
+  Spacer,
   Text,
   red,
   useTheme,
@@ -123,10 +124,54 @@ const Nav = () => {
                   src={state.user.photoURL}
                 ></Avatar>
               </Popover.Trigger>
-              <Popover.Content>
-                <Button onPress={handleLogout} color="secondary" auto>
-                  Cerrar sesión
-                </Button>
+              <Popover.Content
+                css={{
+                  background: "transparent",
+                }}
+              >
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: -100,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.2,
+                  }}
+                >
+                  <Button onPress={handleLogout} color="gradient" auto>
+                    Cerrar sesión
+                  </Button>
+                </motion.div>
+                <Spacer y={0.5} />
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: -100,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.1,
+                  }}
+                >
+                  <Button
+                    color="gradient"
+                    auto
+                    css={{
+                      width: "100%",
+                    }}
+                  >
+                    Perfil
+                  </Button>
+                </motion.div>
               </Popover.Content>
             </Popover>
           ) : (
