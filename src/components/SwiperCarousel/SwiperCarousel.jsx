@@ -6,7 +6,7 @@ import { Swiper } from "swiper/react";
 // Import Swiper styles
 import "swiper/css/bundle";
 
-const SwiperCarousel = ({ children }) => {
+const SwiperCarousel = ({ children, ...props }) => {
   return (
     <Swiper
       loop
@@ -15,6 +15,7 @@ const SwiperCarousel = ({ children }) => {
       slidesPerView="auto"
       navigation
       swipeHandler={true}
+      {...props}
     >
       {children}
     </Swiper>

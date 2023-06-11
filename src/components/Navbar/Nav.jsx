@@ -73,31 +73,32 @@ const Nav = () => {
             <Image width={200} src={codoflixLogo} />
           </motion.div>
         </Navbar.Brand>
-        {routes.map((route, i) => (
-          <motion.div
-            key={route.name}
-            initial={{
-              opacity: 0,
-              y: -100,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              duration: 0.5,
-              delay: 0.2 + i * 0.1,
-            }}
-          >
-            <Navbar.Item>
-              <Link to={route.path}>
-                <Text css={s.link} h5>
-                  {route.name}
-                </Text>
-              </Link>
-            </Navbar.Item>
-          </motion.div>
-        ))}
+        {state.isAuth &&
+          routes.map((route, i) => (
+            <motion.div
+              key={route.name}
+              initial={{
+                opacity: 0,
+                y: -100,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2 + i * 0.1,
+              }}
+            >
+              <Navbar.Item>
+                <Link to={route.path}>
+                  <Text css={s.link} h5>
+                    {route.name}
+                  </Text>
+                </Link>
+              </Navbar.Item>
+            </motion.div>
+          ))}
       </Navbar.Content>
       <Navbar.Content>
         <Navbar.Item>
@@ -140,25 +141,6 @@ const Nav = () => {
                   }}
                   transition={{
                     duration: 0.5,
-                    delay: 0.2,
-                  }}
-                >
-                  <Button onPress={handleLogout} color="gradient" auto>
-                    Cerrar sesión
-                  </Button>
-                </motion.div>
-                <Spacer y={0.5} />
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    y: -100,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    duration: 0.5,
                     delay: 0.1,
                   }}
                 >
@@ -170,6 +152,27 @@ const Nav = () => {
                     }}
                   >
                     Perfil
+                  </Button>
+                </motion.div>
+
+                <Spacer y={0.5} />
+
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: -100,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.2,
+                  }}
+                >
+                  <Button onPress={handleLogout} color="gradient" auto>
+                    Cerrar sesión
                   </Button>
                 </motion.div>
               </Popover.Content>

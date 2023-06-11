@@ -8,7 +8,7 @@ export const getPopularMovies = async () => {
 
 export const getTopRatedMovies = async () => {
   const { data } = await tmdb.get(tmdb_paths.movies.topRated);
-  return data;
+  return moviesAdapter(data.results);
 };
 
 export const getUpcomingMovies = async () => {

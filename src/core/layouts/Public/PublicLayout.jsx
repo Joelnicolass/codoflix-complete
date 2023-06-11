@@ -8,6 +8,7 @@ const PublicLayout = ({ children }) => {
         display: "flex",
         flexDirection: "column",
         width: "100vw",
+        overflowX: "hidden",
       }}
     >
       <Nav />

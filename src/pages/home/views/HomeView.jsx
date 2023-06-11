@@ -1,14 +1,16 @@
-import { Button, Card, Col, Spacer, Text } from "@nextui-org/react";
+import { Spacer } from "@nextui-org/react";
 import CarouselAndTitle from "../../../components/CarouselAndTitle/CarouselAndTitle";
 
 import useSWR from "swr";
 import {
   getPopularMovies,
   getPopularTV,
+  getTopRatedMovies,
 } from "../../../services/tmdb.services";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import Banner from "../../../components/Banner/Banner";
+import TopSection from "../../../components/TopRatedSection/TopRatedSection";
 
 const HomeView = () => {
   const { data: popularMovies, isLoading: popularMoviesIsLoading } = useSWR(
@@ -19,6 +21,11 @@ const HomeView = () => {
   const { data: popularSeries, isLoading: popularSeriesIsLoading } = useSWR(
     "getPopularSeries",
     () => getPopularTV()
+  );
+
+  const { data: topRatedMovies, isLoading: topRatedMoviesIsLoading } = useSWR(
+    "getTopRatedMovies",
+    () => getTopRatedMovies()
   );
 
   const [banner, setBanner] = useState(null);
@@ -72,8 +79,14 @@ const HomeView = () => {
           />
 
           <Spacer y={2} />
+
+          <TopSection
+            title="Las Pelis Mejor Rankeadas!"
+            data={topRatedMovies}
+          />
         </div>
       </div>
+      <Spacer y={7} />
     </>
   );
 };
