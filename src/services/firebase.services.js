@@ -9,6 +9,7 @@ import { auth } from "../core/config/firebase";
 import {
   DOCUMENTS,
   createDocument,
+  getDocumentById,
   getDocuments,
   updateDocument,
 } from "../core/db/firestore.db";
@@ -59,8 +60,9 @@ export const updateFavorites = async (userId, favorites) => {
 };
 
 export const getFavorites = async (userId) => {
-  const favorites = await getDocuments(DOCUMENTS.FAVORITES);
-  const userFavorites = favorites.find((fav) => fav.id === userId);
+  const favorites = await getDocumentById(userId, DOCUMENTS.FAVORITES);
+
+  const userFavorites = favorites || { data: [] };
 
   return userFavorites.data;
 };

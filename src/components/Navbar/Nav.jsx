@@ -115,7 +115,6 @@ const Nav = () => {
             <Popover>
               <Popover.Trigger>
                 <Avatar
-                  onClick={() => console.log("Avatar clicked")}
                   bordered
                   css={{
                     cursor: "pointer",

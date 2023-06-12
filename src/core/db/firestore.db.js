@@ -1,5 +1,12 @@
 import { db } from "../config/firebase";
-import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 export const createDocument = async (name, data) => {
   const refDoc = await addDoc(collection(db, name), data);
@@ -21,6 +28,17 @@ export const updateDocument = async (id, name, data) => {
   const refDoc = await setDoc(doc(db, name, id), { data });
 
   return refDoc;
+};
+
+export const getDocumentById = async (id, name) => {
+  const docRef = doc(db, name, id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() };
+  } else {
+    return null;
+  }
 };
 
 export const DOCUMENTS = {
