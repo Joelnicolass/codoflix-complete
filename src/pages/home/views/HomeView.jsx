@@ -113,7 +113,7 @@ const HomeView = () => {
           <Spacer y={7} />
 
           <CarouselAndTitle
-            title="Tus Favoritos!"
+            title="Tus Pelis Favoritas!"
             data={favorites}
             isLoading={favoritesIsLoading}
           />
