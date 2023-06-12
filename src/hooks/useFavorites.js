@@ -9,9 +9,6 @@ export const useFavorites = () => {
   const { state, dispatch } = useContext(FavoritesContext);
 
   const _updateInDB = async (favorites) => {
-    console.log("favorites", favorites);
-    console.log("authState.user.uid", authState.user.uid);
-
     await updateFavorites(authState.user.uid, favorites);
   };
 

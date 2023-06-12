@@ -64,7 +64,12 @@ const HomeView = () => {
 
     const randomMovieOrSerie = getRandomMovieOrSerie();
     setBanner(randomMovieOrSerie);
-  }, [popularMovies, popularSeries]);
+  }, [
+    popularMovies,
+    popularMoviesIsLoading,
+    popularSeries,
+    popularSeriesIsLoading,
+  ]);
 
   return (
     <>
