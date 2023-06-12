@@ -23,7 +23,9 @@ export const getNowPlayingMovies = async () => {
 
 export const getMovieDetails = async (id) => {
   const { data } = await tmdb.get(tmdb_paths.movies.details(id));
-  return data;
+  const adapted = moviesAdapter([data]);
+
+  return adapted;
 };
 
 export const getMovieVideos = async (id) => {

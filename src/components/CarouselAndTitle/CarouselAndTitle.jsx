@@ -5,9 +5,11 @@ import { Text } from "@nextui-org/react";
 import CardModern from "../CardModern/CardModern";
 import { useModal } from "../../hooks/useModal";
 import Details from "../Details/Details";
+import { useFavorites } from "../../hooks/useFavorites";
 
 const CarouselAndTitle = ({ title, data, isLoading }) => {
   const { openModal } = useModal();
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
   return (
     <>
@@ -26,10 +28,15 @@ const CarouselAndTitle = ({ title, data, isLoading }) => {
                 title={e.title}
                 bg={e.backdrop}
                 footer={`★ ${e.rating}`}
-                onPressedButton={() => {
+                textButtonA="Ver"
+                textButtonB={isFavorite(e.id) ? "★" : "☆"}
+                onPressedButtonA={() => {
                   openModal({
                     content: <Details id={e.id} title={e.title} />,
                   });
+                }}
+                onPressedButtonB={() => {
+                  isFavorite(e.id) ? removeFavorite(e.id) : addFavorite(e.id);
                 }}
               />
             </SwiperSlide>

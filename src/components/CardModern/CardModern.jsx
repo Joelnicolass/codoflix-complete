@@ -1,20 +1,43 @@
 import React, { useState } from "react";
 
-import { Button, Card, Col, Row, Text, useTheme } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  Col,
+  Row,
+  Spacer,
+  Text,
+  useTheme,
+} from "@nextui-org/react";
 
 const CardModern = ({
   title,
   bg,
   footer,
   id,
-  onPressedButton = (data) => {},
+  onPressedButtonA = (data) => {},
+  onPressedButtonB = (data) => {},
+  textButtonA = "",
+  textButtonB = "",
+  colorButtonA = "primary",
+  colorButtonB = "secondary",
 }) => {
   const { theme } = useTheme();
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleClick = (e) => {
-    onPressedButton({
+  const handleClickBtnA = (e) => {
+    onPressedButtonA({
+      event: e,
+      id,
+      title,
+      bg,
+      footer,
+    });
+  };
+
+  const handleClickBtnB = (e) => {
+    onPressedButtonB({
       event: e,
       id,
       title,
@@ -84,8 +107,13 @@ const CardModern = ({
               {footer}
             </Text>
           </Col>
-          <Button onPress={handleClick} auto size="sm" color="secondary">
-            {"PLAY"}
+
+          <Button onPress={handleClickBtnA} auto size="sm" color={colorButtonA}>
+            {textButtonA}
+          </Button>
+          <Spacer x={0.5} />
+          <Button onPress={handleClickBtnB} auto size="sm" color={colorButtonB}>
+            {textButtonB}
           </Button>
         </Row>
       </Card.Footer>

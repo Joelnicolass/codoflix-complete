@@ -16,7 +16,7 @@ import { SwiperSlide } from "swiper/react";
 import { useModal } from "../../hooks/useModal";
 import Details from "../Details/Details";
 
-const TopSection = ({ title, data }) => {
+const TopSection = ({ title, data, isLoading }) => {
   const { theme } = useTheme();
 
   const { openModal } = useModal();

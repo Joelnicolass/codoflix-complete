@@ -3,6 +3,7 @@ import CarouselAndTitle from "../../../components/CarouselAndTitle/CarouselAndTi
 
 import useSWR from "swr";
 import {
+  getMovieDetails,
   getPopularMovies,
   getPopularTV,
   getTopRatedMovies,
@@ -11,8 +12,27 @@ import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import Banner from "../../../components/Banner/Banner";
 import TopSection from "../../../components/TopRatedSection/TopRatedSection";
+import { useFavorites } from "../../../hooks/useFavorites";
 
 const HomeView = () => {
+  const { favorites: favIds } = useFavorites();
+
+  const { data: favorites, isLoading: favoritesIsLoading } = useSWR(
+    ["getFavorites", favIds],
+    () => {
+      if (!favIds) return;
+
+      const promises = favIds.map((id) => getMovieDetails(id));
+
+      return Promise.allSettled(promises).then((res) => {
+        const data = res
+          .filter((e) => e.status === "fulfilled")
+          .map((e) => e.value);
+        return data.flat();
+      });
+    }
+  );
+
   const { data: popularMovies, isLoading: popularMoviesIsLoading } = useSWR(
     "getPopularMovies",
     () => getPopularMovies()
@@ -83,6 +103,14 @@ const HomeView = () => {
           <TopSection
             title="Las Pelis Mejor Rankeadas!"
             data={topRatedMovies}
+          />
+
+          <Spacer y={7} />
+
+          <CarouselAndTitle
+            title="Tus Favoritos!"
+            data={favorites}
+            isLoading={favoritesIsLoading}
           />
         </div>
       </div>

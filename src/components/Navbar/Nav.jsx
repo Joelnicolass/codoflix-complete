@@ -33,7 +33,7 @@ const Nav = () => {
   const handleLogout = async () => {
     await signOut();
 
-    localStorage.removeItem(authKey);
+    localStorage.clear();
 
     dispatch({
       type: AUTH_LOGOUT,

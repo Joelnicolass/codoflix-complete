@@ -4,16 +4,35 @@ import {
   signInWithEmail,
   signInWithGoogle,
   signUpWithEmail,
+  saveUserInDB,
+  getUsers,
 } from "../../../services/firebase.services";
 import { AUTH_LOGIN, authKey } from "../../../core/auth/reducers/authReducer";
 
 const useLogin = () => {
-  const { dispatch } = useAuth();
+  const { dispatch: dispatchAuth } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const _saveInStorages = async (res, saveInDB = true) => {
+    localStorage.setItem(
+      authKey,
+      JSON.stringify({
+        isAuth: true,
+        user: res.user,
+      })
+    );
+
+    if (!saveInDB) return;
+
+    const users = await getUsers();
+    const isRegistered = users.find((user) => user.id === res.user.uid);
+
+    if (!isRegistered) saveUserInDB(res.user);
+  };
 
   const signInGoogle = async () => {
     try {
@@ -21,15 +40,9 @@ const useLogin = () => {
 
       if (!res) return;
 
-      localStorage.setItem(
-        authKey,
-        JSON.stringify({
-          isAuth: true,
-          user: res.user,
-        })
-      );
+      _saveInStorages(res);
 
-      dispatch({
+      dispatchAuth({
         type: AUTH_LOGIN,
         payload: res.user,
       });
@@ -48,15 +61,11 @@ const useLogin = () => {
 
       const res = await signUpWithEmail(email, password);
 
-      localStorage.setItem(
-        authKey,
-        JSON.stringify({
-          isAuth: true,
-          user: res.user,
-        })
-      );
+      if (!res) return;
 
-      dispatch({
+      _saveInStorages(res);
+
+      dispatchAuth({
         type: AUTH_LOGIN,
         payload: res.user,
       });
@@ -84,15 +93,11 @@ const useLogin = () => {
 
       const res = await signInWithEmail(email, password);
 
-      localStorage.setItem(
-        authKey,
-        JSON.stringify({
-          isAuth: true,
-          user: res.user,
-        })
-      );
+      if (!res) return;
 
-      dispatch({
+      _saveInStorages(res, false);
+
+      dispatchAuth({
         type: AUTH_LOGIN,
         payload: res.user,
       });
