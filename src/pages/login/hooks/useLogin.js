@@ -8,9 +8,12 @@ import {
   getUsers,
 } from "../../../services/firebase.services";
 import { AUTH_LOGIN, authKey } from "../../../core/auth/reducers/authReducer";
+import { useCustomToaster } from "../../../hooks/useCustomToaster";
 
 const useLogin = () => {
   const { dispatch: dispatchAuth } = useAuth();
+
+  const { toastSuccess, toastError } = useCustomToaster();
 
   const [form, setForm] = useState({
     email: "",
@@ -46,6 +49,8 @@ const useLogin = () => {
         type: AUTH_LOGIN,
         payload: res.user,
       });
+
+      toastSuccess("Bienvenido!");
     } catch (error) {
       return;
     }
@@ -69,15 +74,17 @@ const useLogin = () => {
         type: AUTH_LOGIN,
         payload: res.user,
       });
+
+      toastSuccess("Bienvenido!");
     } catch (error) {
       console.log(error);
       if (error.code === "auth/email-already-in-use") {
-        alert("El correo ya está en uso");
+        toastError("El correo ya está en uso");
         return;
       }
 
       if (error.code === "auth/invalid-email") {
-        alert("El correo no es válido");
+        toastError("El correo no es válido");
         return;
       }
     }
@@ -101,14 +108,16 @@ const useLogin = () => {
         type: AUTH_LOGIN,
         payload: res.user,
       });
+
+      toastSuccess("Bienvenido!");
     } catch (error) {
       if (error.code === "auth/user-not-found") {
-        alert("Usuario no encontrado");
+        toastError("El usuario no existe");
         return;
       }
 
       if (error.code === "auth/wrong-password") {
-        alert("Contraseña incorrecta");
+        toastError("La contraseña es incorrecta");
         return;
       }
     }
